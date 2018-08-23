@@ -1,24 +1,31 @@
 import * as React from 'react';
-import {connect, DispatchProp} from 'react-redux';
+import {connect} from 'react-redux';
 import {internet} from 'faker';
-// interface IState{
+import './Chat.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-// }
+
+interface IState{
+    addNewUser:any
+}
 
 interface IProps{
     users:string[];
 }
 
-class Chat extends React.Component<IProps & DispatchProp<any>> {
+class Chat extends React.Component<IProps & IState> {
 
     public myRedux=()=>{
         let userName=`@${internet.userName().toLowerCase()}`;
-        this.props.dispatch({type:'ADD_NEW_USER',userName})
+        this.props.addNewUser({type:'ADD_NEW_USER',userName});
     }
 
   public render() {
     return (
-   <div>
+   <div className="chat">
+   <div className="coll-sc-12">
+        
+   </div>
        <button onClick={this.myRedux}>ddd</button>
        <h1>{this.props.users.map(n => <p key={n}>{n}</p>)}</h1>
    </div>
@@ -26,8 +33,13 @@ class Chat extends React.Component<IProps & DispatchProp<any>> {
   }
 }
 
-export default connect(state=>{
-    return {
-        users:state
-    }}
+const mapStateToProps=(state:IProps)=>{
+    return  {users:state}
+}
+
+const mapDispatchToProps=(dispatch:any)=>{
+    return  {addNewUser:(userName:string)=>dispatch({type:'ADD_NEW_USER',userName})}
+}
+
+export default connect(mapStateToProps,mapDispatchToProps
 )(Chat)
